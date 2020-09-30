@@ -3,6 +3,7 @@ using Sausages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Timers;
+
 namespace SausageTest
 {
     /// <summary>
@@ -31,7 +32,8 @@ namespace SausageTest
         }
 
         #region Zusätzliche Testattribute
-        // 
+
+        //
         //Sie können beim Verfassen Ihrer Tests die folgenden zusätzlichen Attribute verwenden:
         //
         //Mit ClassInitialize führen Sie Code aus, bevor Sie den ersten Test in der Klasse ausführen.
@@ -58,7 +60,8 @@ namespace SausageTest
         //{
         //}
         //
-        #endregion
+
+        #endregion Zusätzliche Testattribute
 
         /// <summary>
         ///Ein Test für "op_Addition"
@@ -134,7 +137,7 @@ namespace SausageTest
             Assert.AreEqual(0, position);
             list.RemoveSausageOnPosition(position);
             Assert.AreEqual(0.9, list.WeightOfAllSausages, 0.0001, "Um 0,5 kg leichter");
-            Assert.AreEqual(3,list.Count);
+            Assert.AreEqual(3, list.Count);
             position = list.GetPos(sausageB);
             Assert.AreEqual(-1, position, "SausageB ist nicht mehr in der Liste");
             Sausage expected = list[SausageType.ExtraWurst];
@@ -165,7 +168,7 @@ namespace SausageTest
             Assert.AreEqual(1.4, list.WeightOfAllSausages, 0.000000001, "10 Deka fehlen jetzt");
             givenSausage = list.CutFromSausage(SausageType.EierWurst, 0.3);
             Assert.AreEqual(3, list.Count, "Eine Eierwurst ist nun verbraucht");
-            Assert.AreEqual(1.1, list.WeightOfAllSausages,0.0001, "zweite Wurst angeschnitten");
+            Assert.AreEqual(1.1, list.WeightOfAllSausages, 0.0001, "zweite Wurst angeschnitten");
             givenSausage = list.CutFromSausage(SausageType.EierWurst, 0.8);
             Assert.AreEqual(2, list.Count, "Zweite Eierwurst ist nun auch verbraucht");
             Assert.AreEqual(0.8, list.WeightOfAllSausages, 0.0001, "restliche zwei Würste");
@@ -173,6 +176,5 @@ namespace SausageTest
             givenSausage = list.CutFromSausage(SausageType.EierWurst, 0.3);
             Assert.IsNull(givenSausage, "keine Eierwurst mehr vorhanden");
         }
-
     }
 }
