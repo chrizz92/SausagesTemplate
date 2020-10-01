@@ -51,25 +51,15 @@ namespace Sausages
             }
             else
             {
-                bool isSameTypeOfSausage = false;
-                int index = 0;
-                for (int i = 0; i < _listOfSausages.Count; i++)
+                foreach (Sausage sausageInList in _listOfSausages)
                 {
-                    if (_listOfSausages[i].TypeOfSausage == sausage.TypeOfSausage)
+                    if (sausage.SausageType < sausageInList.SausageType)
                     {
-                        isSameTypeOfSausage = true;
-                    }
-                    if (isSameTypeOfSausage && _listOfSausages[i].TypeOfSausage != sausage.TypeOfSausage)
-                    {
-                        index = i;
-                        break;
+                        _listOfSausages.Insert(_listOfSausages.IndexOf(sausageInList), sausage);
+                        return;
                     }
                 }
-                if (index == 0)
-                {
-                    index = _listOfSausages.Count;
-                }
-                _listOfSausages.Insert(index, sausage);
+                _listOfSausages.Add(sausage);
             }
         }
 
@@ -83,57 +73,71 @@ namespace Sausages
             Sausage newSausage = null;
             double maxWeight = weight;
             bool isFirstSausage = true;
-            foreach (Sausage sausage in _listOfSausages)
-            {
-                if (sausage.TypeOfSausage == sausageType)
-                {
-                    if (sausage.Weight > maxWeight)
-                    {
-                        sausage.Weight = sausage.Weight - maxWeight;
-                        newSausage = new Sausage(sausageType, sausage.DateOfExpiry, weight);
-                        break;
-                    }
-                    else if (sausage.Weight == maxWeight)
-                    {
-                        newSausage = new Sausage(sausageType, sausage.DateOfExpiry, weight);
-                        _listOfSausages.Remove(sausage);
-                        break;
-                    }
-                    else
-                    {
-                        if (isFirstSausage)
-                        {
-                            weight = weight - sausage.Weight;
-                            newSausage = new Sausage(sausageType, sausage.DateOfExpiry, sausage.Weight);
-                            _listOfSausages.Remove(sausage);
 
-                            isFirstSausage = false;
-                        }
-                        else
+            do
+            {
+                if (isFirstSausage)
+                {
+                    foreach (Sausage sausage in _listOfSausages)
+                    {
+                        if (sausage.SausageType == sausageType)
                         {
-                            if (weight > 0)
+                            if (sausage.Weight > weight)
                             {
-                                if (weight >= sausage.Weight)
-                                {
-                                    newSausage.Weight += sausage.Weight;
-                                    weight -= sausage.Weight;
-                                    _listOfSausages.Remove(sausage);
-                                }
-                                else
-                                {
-                                    newSausage.Weight += weight;
-                                    sausage.Weight -= weight;
-                                    weight = 0;
-                                }
+                                newSausage = new Sausage(sausageType, sausage.DateOfExpiry, weight);
+                                sausage.Weight -= weight;
+                                weight = 0.0;
+                                isFirstSausage = false;
                             }
                             else
                             {
-                                break;
+                                newSausage = new Sausage(sausageType, sausage.DateOfExpiry, sausage.Weight);
+                                weight -= sausage.Weight;
+                                sausage.Weight = 0.0;
+                                isFirstSausage = false;
+                            }
+                            break;
+                        }
+                    }
+                    if (isFirstSausage)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    foreach (Sausage sausage in _listOfSausages)
+                    {
+                        if (weight <= 0.001)
+                        {
+                            break;
+                        }
+                        if (sausage.SausageType == sausageType)
+                        {
+                            if (sausage.Weight > weight)
+                            {
+                                newSausage.Weight += weight;
+                                sausage.Weight -= weight;
+                                weight = 0.0;
+                            }
+                            else
+                            {
+                                newSausage.Weight += sausage.Weight;
+                                weight -= sausage.Weight;
+                                sausage.Weight = 0.0;
                             }
                         }
                     }
+                    break;
                 }
-            }
+                for (int i = _listOfSausages.Count - 1; i >= 0; i--)
+                {
+                    if (_listOfSausages[i].Weight <= 0.001)
+                    {
+                        _listOfSausages.RemoveAt(i);
+                    }
+                }
+            } while (weight > 0.001);
 
             return newSausage;
         }
@@ -145,7 +149,7 @@ namespace Sausages
                 Sausage sausageToReturn = null;
                 foreach (Sausage sausage in _listOfSausages)
                 {
-                    if (sausage.TypeOfSausage == sausageType)
+                    if (sausage.SausageType == sausageType)
                     {
                         sausageToReturn = sausage;
                         break;

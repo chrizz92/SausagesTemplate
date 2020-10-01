@@ -3,13 +3,13 @@ using System.Runtime.Remoting.Messaging;
 
 namespace Sausages
 {
+    public enum SausageType { ExtraWurst, LeberKaese, EierWurst, Faschiertes };
+
     /// <summary>
     /// Eine bestimmte Sausage mit Typ und Gewicht
     /// </summary>
     public class Sausage : IComparable
     {
-        public enum SausageType { ExtraWurst, LeberKaese, EierWurst, Faschiertes };
-
         private double _weight;
         private DateTime _expireDate;
         private SausageType _sausageType;
@@ -18,10 +18,10 @@ namespace Sausages
         {
             Weight = weight;
             DateOfExpiry = expireDate;
-            _sausageType = sausageType;
+            SausageType = sausageType;
         }
 
-        public SausageType TypeOfSausage
+        public SausageType SausageType
         {
             get
             {
